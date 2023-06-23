@@ -8,6 +8,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    //backsplash
+    <color name="colorSplashBackground">#333399</color>
+
+    //color set Primary
     <color name="colorPrimary">#4C4C94</color>
     <color name="colorPrimaryDark">#FB0404</color>
     <color name="colorAccent">#FC7C7C</color>

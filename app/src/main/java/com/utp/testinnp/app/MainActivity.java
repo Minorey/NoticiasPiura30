@@ -23,6 +23,8 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.utp.testinnp.R;
 import com.utp.testinnp.adapter.PostAdapter;
+import com.utp.testinnp.api.http.ApiService;
+import com.utp.testinnp.api.http.WordPressClient;
 import com.utp.testinnp.model.Post;
 import com.utp.testinnp.util.InternetConnection;
 

@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">testinNp</string>
+    <string name="app_name">Noticias Piura 3.0</string>
 
-    <string name="splash_screen_info">© 2023 Copyright TCdontSilksong</string>
-    <string name="progressdialog_title">Please wait...</string>
+    <string name="splash_screen_info">© Noticias Piura 3.0 2022. Todos los derechos reservado</string>
+    <string name="progressdialog_title">Porfavor espere...</string>
     <string name="progressdialog_message">Loading...</string>
     <string name="add_as_favorite">add</string>
-    <string name="drawer_menu_favorites">Favorites</string>
+    <string name="drawer_menu_favorites">Favoritos</string>
     <string name="open_drawer">Open navigation drawer</string>
     <string name="close_drawer">Close navigation drawer</string>
 </resources>

@@ -20,6 +20,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +28,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import com.utp.testinnp.R;
+import com.utp.testinnp.api.http.ApiService;
+import com.utp.testinnp.api.http.WordPressClient;
 import com.utp.testinnp.model.Media;
 import com.utp.testinnp.sqlite.PostDB;
 import com.utp.testinnp.util.InternetConnection;
@@ -46,14 +49,14 @@ public class PostActivity extends AppCompatActivity {
 
 
     public static Intent createIntent(Context context, int id, int featuredMedia, String title,
-                                      String excerpt, String content){
+                                      String excerpt, String content) {
         Intent intent = new Intent(context, PostActivity.class);
-        //Setzen des wertes aus dem Intent
+        //Establecer el valor del intent
         intent.putExtra("postId", id);
-        intent.putExtra("featuredMedia",featuredMedia);
+        intent.putExtra("featuredMedia", featuredMedia);
         intent.putExtra("postExcerpt", excerpt);
         intent.putExtra("postTitle", title);
-        intent.putExtra("postContent",content);
+        intent.putExtra("postContent", content);
         return intent;
     }
 
@@ -66,8 +69,9 @@ public class PostActivity extends AppCompatActivity {
         //Get Intent
         int id = (int) getIntent().getSerializableExtra("postId");
         int featuredMedia = (int) getIntent().getSerializableExtra("featuredMedia");
-        String title =  getIntent().getSerializableExtra("postTitle").toString();
-        String content = getIntent().getSerializableExtra("postContent").toString().replaceAll("\\\\n", "<br>").replaceAll("\\\\r", "").replaceAll("\\\\", "");;
+        String title = getIntent().getSerializableExtra("postTitle").toString();
+        String content = getIntent().getSerializableExtra("postContent").toString().replaceAll("\\\\n", "").replaceAll("\\\\r", "").replaceAll("\\\\", "");
+        ;
 
 
         initToolbar(title, id);
@@ -75,9 +79,8 @@ public class PostActivity extends AppCompatActivity {
         initWebView(content);
 
 
-
         //Call Media
-        if(InternetConnection.checkInternetConnection(getApplicationContext())) {
+        if (InternetConnection.checkInternetConnection(getApplicationContext())) {
             ApiService api = WordPressClient.getApiService();
 
             Call<Media> call = api.getPostThumbnail(featuredMedia);
@@ -97,7 +100,7 @@ public class PostActivity extends AppCompatActivity {
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(postBackdrop);
-                    }else{
+                    } else {
 
                     }
                 }
@@ -108,13 +111,13 @@ public class PostActivity extends AppCompatActivity {
                 }
             });
 
-        }else{
+        } else {
             Snackbar.make(parentView, "Can't connect to the Internet", Snackbar.LENGTH_INDEFINITE).show();
         }
     }
 
     //Init Toolbar but do not set media
-    private void initPost(String title){
+    private void initPost(String title) {
 
         postBackdrop = findViewById(R.id.post_backdrop);
         postTitle = findViewById(R.id.post_title);
@@ -124,7 +127,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
 
-
     @SuppressLint("UseCompatLoadingForDrawables")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -132,20 +134,20 @@ public class PostActivity extends AppCompatActivity {
 
         //Get Intent
         int id = (int) getIntent().getSerializableExtra("postId");
-        String title =  getIntent().getSerializableExtra("postTitle").toString();
+        String title = getIntent().getSerializableExtra("postTitle").toString();
         String excerpt = getIntent().getSerializableExtra("postExcerpt").toString();
-        String content = getIntent().getSerializableExtra("postContent").toString().replaceAll("\\\\n", "").replaceAll("\\\\r", "").replaceAll("\\\\", "");
+        String content = getIntent().getSerializableExtra("postContent").toString().replaceAll("\\\\n", "<div>").replaceAll("\\\\r", "").replaceAll("\\\\", "");
 
         //Toggle Navigation icon
 
-
-        if(!isItemSelected){
-            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp,getTheme()));
+        //fill color
+        if (!isItemSelected) {
+            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp, getTheme()));
 
             isItemSelected = true;
             PostDB.getInstance(getApplicationContext()).insert(id, title, excerpt, isItemSelected);
-        }else {
-            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp,getTheme()));
+        } else {
+            item.setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp, getTheme()));
             isItemSelected = false;
 
             PostDB.getInstance(getApplicationContext()).delete(id);
@@ -155,7 +157,7 @@ public class PostActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    //webView PART
     private class MyWebView extends WebViewClient {
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -180,7 +182,7 @@ public class PostActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    private void initToolbar(String title, int id){
+    private void initToolbar(String title, int id) {
 
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         postToolbar = findViewById(R.id.postToolbar);
@@ -189,11 +191,11 @@ public class PostActivity extends AppCompatActivity {
 
 
         isItemSelected = PostDB.getInstance(getApplicationContext()).getDbPostIsFav(id);
-        if(isItemSelected){
-            Log.d("SelectedItem", " "+ isItemSelected);
+        if (isItemSelected) {
+            Log.d("SelectedItem", " " + isItemSelected);
 
 
-        }else {
+        } else {
             Log.d("SelectedItem", " " + isItemSelected);
         }
 
@@ -208,7 +210,7 @@ public class PostActivity extends AppCompatActivity {
     }
 
     //Init CollapsingToolbarLayout
-    private void initCollapsingToolbar(final String title){
+    private void initCollapsingToolbar(final String title) {
         final CollapsingToolbarLayout collapsingToolbar =
                 (CollapsingToolbarLayout) findViewById(R.id.post_collapsing_toolbarLayout);
         collapsingToolbar.setTitle(" ");
@@ -217,7 +219,7 @@ public class PostActivity extends AppCompatActivity {
 
 
     @SuppressLint("SetJavaScriptEnabled")
-    private void initWebView(String content){
+    private void initWebView(String content) {
         final ProgressDialog progressDialog;
         progressDialog = new ProgressDialog(PostActivity.this);
         progressDialog.setTitle(getString(R.string.progressdialog_title));
@@ -226,14 +228,14 @@ public class PostActivity extends AppCompatActivity {
         //Set Html content
         content = "<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />" +
                 "<script src=\"prism.js\"></script>" +
-                "<div class=\"content\">" + content+ "</div>";
+                "<div align=\"justify\" class=\"content\">" + content + "</div>";
 
 
         Log.d("WebViewContent", content);
 
         postContent.getSettings().setLoadsImagesAutomatically(true);
         postContent.getSettings().setJavaScriptEnabled(true);
-        postContent.setWebViewClient(new WebViewClient(){
+        postContent.setWebViewClient(new WebViewClient() {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -248,10 +250,8 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        postContent.loadDataWithBaseURL("file:///android_asset/*",content, "text/html; charset=utf-8", "UTF-8", null);
+        postContent.loadDataWithBaseURL("file:///android_asset/*", content, "text/html; charset=utf-8", "UTF-8", null);
     }
-
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -259,9 +259,9 @@ public class PostActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_to_favorite_menu, menu);
 
-        if(isItemSelected) {
+        if (isItemSelected) {
             menu.findItem(R.id.add_as_favorite).setIcon(getResources().getDrawable(R.drawable.ic_favorite_white_24dp, getTheme()));
-        }else {
+        } else {
             menu.findItem(R.id.add_as_favorite).setIcon(getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp, getTheme()));
         }
         return true;

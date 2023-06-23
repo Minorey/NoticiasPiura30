@@ -1,14 +1,16 @@
-package com.utp.testinnp.app;
+package com.utp.testinnp.api.http;
+
+import com.utp.testinnp.api.params.HttpParams;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class WordPressClient {
-    private static final String BASE_URL = "https://noticiaspiura30.pe/wp-json/wp/v2/";
+
     public static Retrofit getRetroInstance(){
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(HttpParams.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit;

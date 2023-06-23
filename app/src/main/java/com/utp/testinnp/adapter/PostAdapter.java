@@ -17,7 +17,7 @@ import com.utp.testinnp.app.PostActivity;
 import com.utp.testinnp.model.Post;
 
 import java.util.List;
-
+//vreascion del recyclerview
 public class PostAdapter extends RecyclerView.Adapter {
     private Context context;
     private List<Post> posts;
