@@ -19,6 +19,10 @@ public class Post {
     @SerializedName("content")
     private JsonObject content;
 
+    //@SerializedName("author")
+    //private JsonObject author;
+
+
     //Variable for SQLite
     private int sqLiteId;
     private int wpPostId;
