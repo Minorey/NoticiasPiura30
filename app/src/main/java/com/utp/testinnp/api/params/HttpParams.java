@@ -8,7 +8,7 @@ public class HttpParams {
     public static final String POST_ID = "posts/{id}";
     public static final String POST_ALL = "posts/?filter[category_name]=country&per_page=99";
     public static final String AUTHOR_POST = "/users/12";
-     public  static  final  String CAT = "posts?[cat]=11";
+    public  static  final  String CAT = "posts?[cat]=11";
 
     //Media
     public static final String MEDIA_FEATURED = "media/{featured_media}";
